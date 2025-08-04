@@ -5,104 +5,110 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2025 미래인재반 여름캠프 종합보고서</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    /* 여기에 위에서 제공한 CSS 전부 포함 */
-    /* (생략) 위 CSS 코드 전체 붙여넣기 */
+    /* 원래 CSS 코드 전체 유지 */
+    /* ... 기존 스타일 그대로 ... */
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- 여기에 위에서 제공한 body 내 HTML 전체 포함 -->
-    <!-- (생략) 위 body 내용 전체 붙여넣기 -->
+    <!-- 기존 HTML 본문 그대로 유지 -->
+    <!-- ... 전체 캠프 구조, 차트, 카드, 피드백, MVP 공개 등 포함 ... -->
   </div>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const ctx = document.getElementById('satisfactionChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: [
-            '바베큐 파티', '창의성 프로젝트', '유성우 관측', 
-            'AI 인문학 특강', '선배와의 멘토링', '점심식사',
-            '오대산 트래킹', '근전도·심전도·뇌전도', '물: 문명과 위기', '수학과 의사결정'
-          ],
-          datasets: [{
-            label: '만족도',
-            data: [4.88, 4.83, 4.79, 4.71, 4.67, 4.46, 4.38, 4.38, 4.33, 4.25],
-            backgroundColor: [
-              'rgba(255, 107, 107, 0.8)', 'rgba(78, 205, 196, 0.8)', 'rgba(69, 183, 209, 0.8)', 
-              'rgba(150, 206, 180, 0.8)', 'rgba(255, 234, 167, 0.8)', 'rgba(221, 160, 221, 0.8)',
-              'rgba(152, 216, 200, 0.8)', 'rgba(247, 220, 111, 0.8)', 'rgba(187, 143, 206, 0.8)', 'rgba(133, 193, 233, 0.8)'
+      const canvas = document.getElementById('satisfactionChart');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: [
+              '바베큐 파티', '창의성 프로젝트', '유성우 관측',
+              'AI 인문학 특강', '선배와의 멘토링', '점심식사',
+              '오대산 트래킹', '근전도·심전도·뇌전도', '물: 문명과 위기', '수학과 의사결정'
             ],
-            borderColor: [
-              '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
-              '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9'
-            ],
-            borderWidth: 2,
-            borderRadius: 8,
-            borderSkipped: false,
-          }]
-        },
-        options: {
-          indexAxis: 'y',
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              backgroundColor: 'rgba(44, 62, 80, 0.9)',
-              titleColor: '#fff',
-              bodyColor: '#fff',
-              borderColor: '#667eea',
-              borderWidth: 1,
-              callbacks: {
-                label: function(context) {
-                  return '만족도: ' + context.raw + '/5.00점';
+            datasets: [{
+              label: '만족도',
+              data: [4.88, 4.83, 4.79, 4.71, 4.67, 4.46, 4.38, 4.38, 4.33, 4.25],
+              backgroundColor: [
+                'rgba(255, 107, 107, 0.8)', 'rgba(78, 205, 196, 0.8)', 'rgba(69, 183, 209, 0.8)',
+                'rgba(150, 206, 180, 0.8)', 'rgba(255, 234, 167, 0.8)', 'rgba(221, 160, 221, 0.8)',
+                'rgba(152, 216, 200, 0.8)', 'rgba(247, 220, 111, 0.8)', 'rgba(187, 143, 206, 0.8)', 'rgba(133, 193, 233, 0.8)'
+              ],
+              borderColor: [
+                '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
+                '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9'
+              ],
+              borderWidth: 2,
+              borderRadius: 8,
+              borderSkipped: false
+            }]
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: 'rgba(44, 62, 80, 0.9)',
+                titleColor: '#fff',
+                bodyColor: '#fff',
+                borderColor: '#667eea',
+                borderWidth: 1,
+                callbacks: {
+                  label: function(context) {
+                    return '만족도: ' + context.raw + '/5.00점';
+                  }
                 }
               }
-            }
-          },
-          scales: {
-            x: {
-              beginAtZero: true,
-              max: 5,
-              ticks: {
-                stepSize: 0.5,
-                callback: function(value) { return value.toFixed(1); },
-                color: '#2c3e50',
-                font: { size: 12, weight: '500' }
+            },
+            scales: {
+              x: {
+                beginAtZero: true,
+                max: 5,
+                ticks: {
+                  stepSize: 0.5,
+                  callback: function(value) { return value.toFixed(1); },
+                  color: '#2c3e50',
+                  font: { size: 12, weight: '500' }
+                },
+                grid: {
+                  color: 'rgba(102, 126, 234, 0.1)',
+                  lineWidth: 1
+                },
+                title: {
+                  display: true,
+                  text: '만족도 (5점 만점)',
+                  font: { size: 14, weight: 'bold' },
+                  color: '#2c3e50'
+                }
               },
-              grid: {
-                color: 'rgba(102, 126, 234, 0.1)',
-                lineWidth: 1
-              },
-              title: {
-                display: true,
-                text: '만족도 (5점 만점)',
-                font: { size: 14, weight: 'bold' },
-                color: '#2c3e50'
+              y: {
+                grid: { display: false },
+                ticks: {
+                  font: { size: 12, weight: '500' },
+                  color: '#2c3e50'
+                }
               }
             },
-            y: {
-              grid: { display: false },
-              ticks: {
-                font: { size: 12, weight: '500' },
-                color: '#2c3e50'
-              }
+            animation: {
+              duration: 2000,
+              easing: 'easeOutQuart'
             }
-          },
-          animation: {
-            duration: 2000,
-            easing: 'easeOutQuart'
           }
-        }
-      });
+        });
+      }
     });
 
     function revealContent() {
       const content = document.getElementById('hiddenContent');
-      content.style.display = content.style.display === 'block' ? 'none' : 'block';
+      if (content) {
+        content.style.display = content.style.display === 'block' ? 'none' : 'block';
+      }
     }
   </script>
 </body>

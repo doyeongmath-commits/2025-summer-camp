@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 미래인재반 여름캠프 종합보고서</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        /* [수정됨] Pretendard 웹 폰트 불러오기 */
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            /* [수정됨] Pretendard 폰트를 최우선으로 적용 */
+            font-family: 'Pretendard', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 24px;
+            padding: 45px;
+            margin-bottom: 35px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 2.8rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .camp-overview {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08));
+            border-radius: 18px;
+            padding: 35px;
+            border: 2px solid rgba(102, 126, 234, 0.15);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+            margin: 30px 0;
+        }
+        
+        .camp-overview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        
+        .overview-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(102, 126, 234, 0.05);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.12);
+        }
+        
+        .stat-card .number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .label {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .stat-card .detail {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 8px;
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 24px;
+            padding: 45px;
+            margin-bottom: 35px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid rgba(102, 126, 234, 0.1);
+            position: relative;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+        
+        .chart-container {
+            margin: 35px 0;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+            border: 2px solid rgba(102, 126, 234, 0.05);
+        }
+        
+        .chart-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            height: 500px;
+        }
+        
+        .key-findings {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .finding-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            padding: 28px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+        
+        .finding-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.15);
+        }
+        
+        .finding-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+        }
+
+        .finding-card p {
+            color: #555;
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 35px 0;
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .highlight-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+        
+        .highlight-box h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #ffffff;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .highlight-box p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #f8f9fa;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .feedback-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 25px 0;
+            border: 2px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .quote {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid rgba(102, 126, 234, 0.1);
+            padding: 28px;
+            margin: 20px 0;
+            border-radius: 16px;
+            font-style: italic;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            overflow: hidden;
+            line-height: 1.8;
+            font-size: 1.05rem;
+            color: #2c3e50;
+        }
+        
+        .quote::before {
+            content: '"';
+            font-size: 4rem;
+            color: rgba(102, 126, 234, 0.2);
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .quote::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        
+        .video-section {
+            text-align: center;
+            margin: 35px 0;
+        }
+        
+        .video-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+            border: 2px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .video-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 18px 35px;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            position: relative;
+        }
+
+        .video-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .footer {
+            background: rgba(44, 62, 80, 0.95);
+            color: #ffffff;
+            text-align: center;
+            padding: 45px;
+            border-radius: 24px;
+            margin-top: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer h3 {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .footer p {
+            color: #ecf0f1;
+            font-weight: 400;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .improvement-note {
+            background: rgba(255, 193, 7, 0.1);
+            border: 2px solid rgba(255, 193, 7, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .improvement-note h4 {
+            color: #856404;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .improvement-note p {
+            color: #856404;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .overview-stats {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .chart-wrapper {
+                height: 400px;
+            }
+            
+            .key-findings {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .section {
+                padding: 30px 20px;
+            }
+            
+            .highlight-box {
+                padding: 30px 20px;
+            }
+            
+            .highlight-box h3 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 2025 미래인재반 여름캠프</h1>
+            <p style="font-size: 1.3rem; color: #555; margin-top: 15px; font-weight: 500;">창의성과 협업으로 미래를 설계하다</p>
+            
+            <div class="camp-overview">
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <h3 style="color: #2c3e50; font-size: 1.4rem; margin-bottom: 10px;">📅 2025.07.28~30 (2박 3일)</h3>
+                    <h3 style="color: #2c3e50; font-size: 1.4rem;">🏛️ 서울대학교 평창캠퍼스</h3>
+                </div>
+                
+                <div class="overview-stats">
+                    <div class="stat-card">
+                        <span class="number">25명</span>
+                        <span class="label">설문 응답자</span>
+                        <div class="detail">전체 참가자 대상</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="number">4.57점</span>
+                        <span class="label">전체 평균 만족도</span>
+                        <div class="detail">5점 만점 기준</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="number">91%</span>
+                        <span class="label">높은만족도 비율</span>
+                        <div class="detail">4.0점 이상 응답</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📊 활동별 만족도 분석</h2>
+            
+            <div class="chart-container">
+                <h3 style="text-align: center; margin-bottom: 25px; color: #2c3e50; font-size: 1.3rem;">📈 프로그램별 만족도 현황</h3>
+                <div class="chart-wrapper">
+                    <canvas id="satisfactionChart"></canvas>
+                </div>
+            </div>
+
+            <div class="key-findings">
+                <div class="finding-card">
+                    <h3>🥇 최고 만족도</h3>
+                    <p><strong>바베큐 파티 (4.88점)</strong><br>편안한 분위기에서의 자연스러운 소통과 네트워킹이 최고의 호응을 얻었습니다.</p>
+                </div>
+                
+                <div class="finding-card">
+                    <h3>🧠 창의성 프로젝트</h3>
+                    <p><strong>4.83점으로 2위</strong><br>정답 없는 문제해결을 통한 사고력 확장과 팀워크 경험이 높은 평가를 받았습니다.</p>
+                </div>
+                
+                <div class="finding-card">
+                    <h3>⭐ 유성우 관측</h3>
+                    <p><strong>4.79점, 92%가 만점</strong><br>예상치 못한 깜짝 프로그램으로 24명 중 22명이 최고점(5점)을 부여했습니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎬 캠프 하이라이트</h2>
+            
+            <div class="video-section">
+                <div class="video-card">
+                    <h3 style="color: #2c3e50; margin-bottom: 20px; font-size: 1.4rem;">📹 캠프 스케치 영상</h3>
+                    <div style="margin: 25px 0;">
+                        <a href="https://www.youtube.com/watch?v=fMAe3z_i6eA" 
+                           target="_blank" 
+                           class="video-link">
+                            🎥 유튜브에서 보기
+                        </a>
+                    </div>
+                    <p style="margin-top: 20px; color: #666; font-style: italic; font-size: 1.05rem;">✨ 캠프의 생생한 순간들을 담은 영상입니다</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💭 참가자 생생한 목소리</h2>
+            
+            <div class="feedback-section">
+                <h3 style="color: #2c3e50; margin-bottom: 20px; font-size: 1.3rem;">🤖 AI 인문학 특강 소감</h3>
+                
+                <div class="quote">
+                    AI 시대에 인간만의 창의력과 인문학적 소양이 얼마나 중요한지 알게 되었습니다. AI와 경쟁하기보다 공존하며 활용하는 능력을 기르고 싶습니다.
+                </div>
+
+                <div class="quote">
+                    인공지능이 발전하는 시대에 우리 인간이 무엇을 할 수 있을까를 확인함으로써 인공지능의 원리를 파악하거나 수학적인 원리를 통해 살아갈 수 있다는 것을 알게 되었습니다.
+                </div>
+            </div>
+
+            <div class="feedback-section">
+                <h3 style="color: #2c3e50; margin-bottom: 20px; font-size: 1.3rem;">🔬 창의성 프로젝트 소감</h3>
+                
+                <div class="quote">
+                    창의성 프로젝트를 통해 '정답이 없는 문제'를 해결하는 경험을 했습니다. 다양한 의견을 수렴하고 협업하며 더 나은 결과를 만들어낼 수 있다는 것을 깨달았습니다.
+                </div>
+
+                <div class="quote">
+                    다양한 사람이 모여 다양한 의견을 내니, 좋은 결과를 볼 수 있었던 것 같습니다. 함께하는 프로젝트를 진행하며 조별과제가 무조건 나쁘지는 않구나라는 사실을 깨달았습니다.
+                </div>
+            </div>
+
+            <div class="feedback-section">
+                <h3 style="color: #2c3e50; margin-bottom: 20px; font-size: 1.3rem;">🌠 유성우 관측 소감</h3>
+                
+                <div class="quote">
+                    유성우 관측은 정말 특별한 경험이었습니다. 자연과의 교감을 통해 일상에서 느낄 수 없는 감동을 받았습니다.
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h3>🎯 핵심 성과 및 가치</h3>
+            <p>
+                2025 미래인재반 여름캠프는 단순한 학습 프로그램을 넘어 <strong>미래 사회의 리더</strong>를 양성하는 종합적 성장 경험이었습니다. 
+                창의적 문제해결, 협업 능력, 비판적 사고, 그리고 AI 시대에 필요한 인문학적 소양을 함양하는 뜻깊은 시간이었습니다.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>📈 개선점 및 향후 방향</h2>
+            
+            <div class="improvement-note">
+                <h4>🔧 개선 필요 영역</h4>
+                <p><strong>수학과 의사결정 특강 (4.25점)</strong>과 <strong>물: 문명과 위기 특강 (4.33점)</strong>은 상대적으로 낮은 점수를 받았습니다. 
+                내용 전달 방식의 개선과 학생들의 관심을 끌 수 있는 방법을 모색해볼 필요가 있습니다.</p>
+            </div>
+            
+            <div class="key-findings">
+                <div class="finding-card">
+                    <h3>✅ 성공 요인</h3>
+                    <p>• <strong>체험형 학습</strong>: 직접 참여하는 활동들이 높은 만족도<br>
+                    • <strong>협업 중심</strong>: 팀워크를 통한 성장 경험<br>
+                    • <strong>현실적 주제</strong>: AI 시대와 연결된 현재적 관심사</p>
+                </div>
+                
+                <div class="finding-card">
+                    <h3>🎯 향후 발전 방향</h3>
+                    <p>• <strong>더 많은 실습</strong>: 이론보다 체험 중심 프로그램 확대<br>
+                    • <strong>개인화 학습</strong>: 학생 수준에 맞는 맞춤형 접근<br>
+                    • <strong>연속성 강화</strong>: 캠프 이후 follow-up 프로그램</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h3>🌟 성공적인 캠프를 만들어주신 모든 분들께 감사드립니다</h3>
+            <p style="margin-top: 20px; font-style: italic;">
+                "미래는 우리가 함께 만들어가는 것입니다. 이번 캠프에서 얻은 경험과 네트워크가 학생들의 밝은 미래를 여는 열쇠가 되기를 바랍니다."
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('satisfactionChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [
+                        '바베큐 파티', '창의성 프로젝트', '유성우 관측', 
+                        'AI 인문학 특강', '선배와의 멘토링', '점심식사',
+                        '오대산 트래킹', '근전도·심전도·뇌전도', '물: 문명과 위기', '수학과 의사결정'
+                    ],
+                    datasets: [{
+                        label: '만족도',
+                        data: [4.88, 4.83, 4.79, 4.71, 4.67, 4.46, 4.38, 4.38, 4.33, 4.25],
+                        backgroundColor: [
+                            'rgba(255, 107, 107, 0.8)', 'rgba(78, 205, 196, 0.8)', 'rgba(69, 183, 209, 0.8)', 
+                            'rgba(150, 206, 180, 0.8)', 'rgba(255, 234, 167, 0.8)', 'rgba(221, 160, 221, 0.8)',
+                            'rgba(152, 216, 200, 0.8)', 'rgba(247, 220, 111, 0.8)', 'rgba(187, 143, 206, 0.8)', 'rgba(133, 193, 233, 0.8)'
+                        ],
+                        borderColor: [
+                            '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
+                            '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9'
+                        ],
+                        borderWidth: 2,
+                        borderRadius: 8,
+                        borderSkipped: false,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(44, 62, 80, 0.9)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: '#667eea',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(context) {
+                                    return '만족도: ' + context.raw + '/5.00점';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 5,
+                            ticks: {
+                                stepSize: 0.5,
+                                callback: function(value) {
+                                    return value.toFixed(1);
+                                },
+                                color: '#2c3e50',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(102, 126, 234, 0.1)',
+                                lineWidth: 1
+                            },
+                            title: {
+                                display: true,
+                                text: '만족도 (5점 만점)',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                },
+                                color: '#2c3e50'
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                },
+                                color: '#2c3e50'
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

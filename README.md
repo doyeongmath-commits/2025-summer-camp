@@ -1,1 +1,1 @@
-https://doyeongmath-commits.github.io/2025-summer-camp/
+https://doyeongmath.github.io/2025-summer-camp/
